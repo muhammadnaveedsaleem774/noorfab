@@ -1,0 +1,181 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
+import { ROUTES } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Container } from "./Container";
+
+const FOOTER_LINKS = {
+  aboutUs: [
+    { label: "Our Story", href: ROUTES.about },
+    { label: "Sustainability", href: "/sustainability" },
+    { label: "Careers", href: "/careers" },
+  ],
+  quickLinks: [
+    { label: "Shop", href: ROUTES.shop },
+    { label: "Collections", href: ROUTES.collections },
+    { label: "New Arrivals", href: "/shop?new=1" },
+    { label: "Account", href: ROUTES.account },
+  ],
+  customerService: [
+    { label: "Contact Us", href: ROUTES.contact },
+    { label: "Shipping & Returns", href: "/shipping" },
+    { label: "Size Guide", href: "/size-guide" },
+    { label: "FAQs", href: "/faq" },
+  ],
+  contact: [
+    { label: "Email", href: "mailto:hello@al-noor.com", value: "hello@al-noor.com" },
+    { label: "Phone", href: "tel:+1234567890", value: "+1 (234) 567-890" },
+  ],
+};
+
+const SOCIAL = [
+  { icon: Facebook, href: "#", label: "Facebook" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+];
+
+const linkClass =
+  "flex min-h-[44px] items-center text-sm text-white/90 transition-colors hover:text-[#C4A747] md:min-h-0";
+
+export function Footer() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setStatus("loading");
+    setTimeout(() => {
+      setStatus("success");
+      setEmail("");
+    }, 500);
+  };
+
+  return (
+    <footer className="bg-[#333333] text-white">
+      <Container
+        noPadding
+        className="py-8 px-4 md:py-12 md:px-8 lg:py-16 lg:px-12"
+      >
+        {/* Desktop: 4 cols equal, gap-12 (3rem). Tablet: 2 cols 2 rows, gap-8. Mobile: 1 col, stack */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 lg:grid-cols-4 lg:gap-12">
+          <div>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              About Us
+            </h3>
+            <ul className="space-y-1">
+              {FOOTER_LINKS.aboutUs.map(({ label, href }) => (
+                <li key={href}>
+                  <Link href={href} className={linkClass}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Quick Links
+            </h3>
+            <ul className="space-y-1">
+              {FOOTER_LINKS.quickLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <Link href={href} className={linkClass}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Customer Service
+            </h3>
+            <ul className="space-y-1">
+              {FOOTER_LINKS.customerService.map(({ label, href }) => (
+                <li key={href}>
+                  <Link href={href} className={linkClass}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Contact
+            </h3>
+            <ul className="space-y-1">
+              {FOOTER_LINKS.contact.map(({ label, href, value }) => (
+                <li key={label}>
+                  <Link href={href} className={linkClass}>
+                    {value ?? label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex gap-4">
+              {SOCIAL.map(({ icon: Icon, href, label }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="text-white/90 transition-colors hover:text-[#C4A747]"
+                >
+                  <Icon className="h-5 w-5" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Newsletter: full width on mobile */}
+        <div className="mt-12 border-t border-white/20 pt-10">
+          <div className="mx-auto w-full max-w-md lg:max-w-md">
+            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-white">
+              Newsletter
+            </h3>
+            <p className="mb-4 text-sm text-white/80">
+              Subscribe for updates and exclusive offers.
+            </p>
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex flex-col gap-4 sm:flex-row"
+            >
+              <Input
+                type="email"
+                placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading"}
+                className="w-full flex-1 border-white/30 bg-white/10 text-white placeholder:text-white/60 focus-visible:ring-[#C4A747]"
+              />
+              <Button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full shrink-0 bg-[#C4A747] text-[#333333] hover:bg-[#C4A747]/90 sm:w-auto"
+              >
+                {status === "loading"
+                  ? "..."
+                  : status === "success"
+                    ? "Subscribed"
+                    : "Submit"}
+              </Button>
+            </form>
+          </div>
+        </div>
+
+        <div className="mt-10 border-t border-white/20 pt-6 text-center text-sm text-white/60">
+          <span suppressHydrationWarning>© {new Date().getFullYear()} AL-NOOR. All rights reserved.</span>
+        </div>
+      </Container>
+    </footer>
+  );
+}

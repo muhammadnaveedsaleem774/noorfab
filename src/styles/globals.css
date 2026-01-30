@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  :root {
+    /* AL-NOOR: Primary Dark #333333 */
+    --primary-dark: 0 0% 20%;
+    /* AL-NOOR: Gold Accent #C4A747 */
+    --gold-accent: 43 42% 52%;
+    /* AL-NOOR: Cream #F5F3EE */
+    --cream: 40 25% 96%;
+    /* AL-NOOR: Sage Green #5BA383 */
+    --sage: 155 27% 47%;
+
+    --background: 40 25% 96%;
+    --foreground: 0 0% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+    --primary: 0 0% 20%;
+    --primary-foreground: 40 25% 96%;
+    --secondary: 155 27% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 40 15% 93%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 43 42% 52%;
+    --accent-foreground: 0 0% 20%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 10% 90%;
+    --input: 40 10% 90%;
+    --ring: 0 0% 20%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 20%;
+    --foreground: 40 25% 96%;
+    --card: 0 0% 20%;
+    --card-foreground: 40 25% 96%;
+    --popover: 0 0% 20%;
+    --popover-foreground: 40 25% 96%;
+    --primary: 43 42% 52%;
+    --primary-foreground: 0 0% 20%;
+    --secondary: 155 27% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 25%;
+    --muted-foreground: 40 15% 70%;
+    --accent: 43 42% 52%;
+    --accent-foreground: 0 0% 20%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 43 42% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-cream text-primary-dark antialiased overflow-x-hidden;
+  }
+  /* Gold focus ring for accessibility (brand guideline) */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-[#C4A747] ring-offset-2;
+  }
+  /* Mobile: subtle tap highlight (brand color) instead of default */
+  * {
+    -webkit-tap-highlight-color: rgba(196, 167, 71, 0.2);
+    tap-highlight-color: rgba(196, 167, 71, 0.2);
+  }
+  /* Respect reduced motion preference (accessibility) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    /* Disable tap scale feedback when user prefers reduced motion */
+    button[class*="active:scale"],
+    [class*="active:scale"] {
+      transform: none !important;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+  }
+  .animate-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  .skip-link {
+    @apply sr-only rounded-md bg-[#C4A747] px-4 py-2 text-[#333333] outline-none ring-2 ring-[#C4A747] ring-offset-2;
+  }
+  .skip-link:focus {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+  /* Touch target: ensure interactive elements meet 44x44px minimum on touch devices */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .touch-target-y {
+    min-height: 44px;
+  }
+  .touch-target-x {
+    min-width: 44px;
+  }
+}
