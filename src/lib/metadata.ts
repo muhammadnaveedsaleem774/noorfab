@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_NAME, SITE_DESCRIPTION } from "./constants";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://al-noor.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://noor-g.com";
 
 export function siteMetadata(overrides?: Partial<Metadata>): Metadata {
   return {

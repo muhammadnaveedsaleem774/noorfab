@@ -30,7 +30,7 @@ const config: Config = {
         container: "1400px",
       },
       colors: {
-        // AL-NOOR brand colors
+        // NOOR-G brand colors
         "primary-dark": "#333333",
         "gold-accent": "#C4A747",
         "cream": "#F5F3EE",

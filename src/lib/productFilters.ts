@@ -23,6 +23,8 @@ export function filterProducts(
 export function sortProducts(products: Product[], sort: SortValue): Product[] {
   const list = [...products];
   switch (sort) {
+    case "relevance":
+      return list; // API order
     case "price-asc":
       return list.sort((a, b) => (a.salePrice ?? a.price) - (b.salePrice ?? b.price));
     case "price-desc":

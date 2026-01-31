@@ -14,7 +14,7 @@ const maxWidthClass = {
 } as const;
 
 /**
- * Premium responsive container for AL-NOOR.
+ * Premium responsive container for NOOR-G.
  * - Max-width: 1400px (desktop)
  * - Padding: 1rem mobile, 2rem tablet (md), 3rem desktop (lg+)
  * - Center aligned

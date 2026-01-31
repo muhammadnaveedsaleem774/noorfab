@@ -4,27 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import {
-  Menu,
-  Search,
-  Heart,
-  ShoppingBag,
-  User,
-  X,
-} from "lucide-react";
+import { Search, Heart, ShoppingBag, User } from "lucide-react";
 import { SearchBar } from "./SearchBar";
+import { MobileMenu } from "./MobileMenu";
 import { Container } from "./Container";
 import { ROUTES } from "@/lib/constants";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
+import { useSearchOpen } from "@/components/shared/Providers";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +26,7 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.collections, label: "Collections" },
-  { href: ROUTES.about, label: "About" },
+  { href: ROUTES.about, label: "Who We Are" },
   { href: ROUTES.contact, label: "Contact" },
 ] as const;
 
@@ -47,8 +35,7 @@ export function Header() {
   const { data: session, status } = useSession();
   const cartCount = useCartStore((s) => s.getCartItemCount());
   const wishlistCount = useWishlistStore((s) => s.productIds.length);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { searchOpen, setSearchOpen } = useSearchOpen();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -70,6 +57,10 @@ export function Header() {
         noPadding
         className="flex h-full items-center justify-between gap-4 px-4 md:px-8 lg:gap-8 lg:px-12"
       >
+        {/* Mobile menu trigger - left on mobile */}
+        <div className="order-first lg:order-none lg:hidden">
+          <MobileMenu onSearchOpen={() => setSearchOpen(true)} />
+        </div>
         {/* Logo: 24px mobile, 32px desktop */}
         <Link
           href={ROUTES.home}
@@ -78,7 +69,7 @@ export function Header() {
             "text-2xl lg:text-[32px] lg:leading-none"
           )}
         >
-          AL-NOOR
+          NOOR-G
         </Link>
 
         {/* Desktop nav (1024px+): 16px, 2rem spacing */}
@@ -94,19 +85,19 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Right: Search (icon opens overlay), Wishlist, Cart, User. Tablet+: show all. Mobile: search icon opens full-screen overlay */}
+        {/* Right: Search, Wishlist, Cart, User. On mobile (<768px) show only Cart (rest in BottomNav) */}
         <div className="flex items-center gap-1 md:gap-2">
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 min-h-touch min-w-touch text-[#333333] transition-transform hover:scale-110 hover:text-[#C4A747] hover:bg-[#C4A747]/10 lg:h-12 lg:w-12"
+            className="hidden h-10 w-10 min-h-touch min-w-touch text-[#333333] transition-transform hover:scale-110 hover:text-[#C4A747] hover:bg-[#C4A747]/10 sm:flex lg:h-12 lg:w-12"
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
           >
             <Search className="h-5 w-5 lg:h-6 lg:w-6" />
           </Button>
 
-          <Link href={ROUTES.wishlist}>
+          <Link href={ROUTES.wishlist} className="hidden sm:block">
             <Button
               variant="ghost"
               size="icon"
@@ -122,7 +113,7 @@ export function Header() {
             </Button>
           </Link>
 
-          <Link href={ROUTES.cart}>
+          <Link href={ROUTES.cart} className="flex">
             <Button
               variant="ghost"
               size="icon"
@@ -143,7 +134,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 min-h-touch min-w-touch text-[#333333] transition-transform hover:scale-110 hover:text-[#C4A747] hover:bg-[#C4A747]/10 lg:h-12 lg:w-12"
+                className="hidden h-10 w-10 min-h-touch min-w-touch text-[#333333] transition-transform hover:scale-110 hover:text-[#C4A747] hover:bg-[#C4A747]/10 sm:flex lg:h-12 lg:w-12"
                 aria-label="User menu"
               >
                 <User className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -177,84 +168,6 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Hamburger: tablet (768px) to desktop (1023px); mobile also uses it */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild className="lg:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-10 w-10 min-h-touch min-w-touch text-[#333333] hover:text-[#C4A747]"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5 lg:h-6 lg:w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className={cn(
-                "h-full w-full max-w-[min(100vw,320px)] border-l border-border bg-white p-0",
-                "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
-                "duration-300 ease-out"
-              )}
-            >
-              <SheetHeader className="flex flex-row items-center justify-between border-b border-border px-4 py-4 text-left">
-                <SheetTitle className="text-xl font-bold text-[#C4A747]">
-                  AL-NOOR
-                </SheetTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setMobileOpen(false)}
-                  aria-label="Close menu"
-                  className="min-h-touch min-w-touch"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </SheetHeader>
-              <nav className="flex flex-col px-2 py-4">
-                {NAV_LINKS.map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "flex min-h-12 items-center rounded-md px-4 text-base font-medium text-[#333333] transition-colors hover:bg-[#C4A747]/10 hover:text-[#C4A747]",
-                      pathname === href && "font-semibold text-[#C4A747]"
-                    )}
-                  >
-                    {label}
-                  </Link>
-                ))}
-                <div className="my-2 border-t border-border" />
-                <Link
-                  href={ROUTES.wishlist}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex min-h-12 items-center rounded-md px-4 text-base text-[#333333] hover:bg-[#C4A747]/10 hover:text-[#C4A747]"
-                >
-                  Wishlist {showWishlistCount > 0 && `(${showWishlistCount})`}
-                </Link>
-                <Link
-                  href={ROUTES.cart}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex min-h-12 items-center rounded-md px-4 text-base text-[#333333] hover:bg-[#C4A747]/10 hover:text-[#C4A747]"
-                >
-                  Cart {showCartCount > 0 && `(${showCartCount})`}
-                </Link>
-                {(!mounted || status !== "authenticated") && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMobileOpen(false);
-                      signIn("google");
-                    }}
-                    className="mt-4 flex min-h-12 w-full items-center rounded-md bg-[#C4A747] px-4 text-left font-medium text-[#333333] hover:bg-[#C4A747]/90"
-                  >
-                    Google Sign In
-                  </button>
-                )}
-              </nav>
-            </SheetContent>
-          </Sheet>
         </div>
       </Container>
 

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 import type { Product } from "@/types";
 
-const CART_STORAGE_KEY = "al-noor-cart";
+const CART_STORAGE_KEY = "noor-g-cart";
 const CART_EXPIRY_DAYS = 30;
 const CART_EXPIRY_MS = CART_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
 

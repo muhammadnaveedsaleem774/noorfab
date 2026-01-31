@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 import type { User } from "@/types";
 
-const USER_STORAGE_KEY = "al-noor-user";
+const USER_STORAGE_KEY = "noor-g-user";
 
 type UserProfileUpdate = Partial<
   Pick<User, "fullName" | "phone" | "profileImage" | "email">

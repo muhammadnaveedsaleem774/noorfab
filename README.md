@@ -1,6 +1,6 @@
-# AL-NOOR Fab
+# NOOR-G Fab
 
-E-commerce frontend for AL-NOOR — premium cotton & lawn fashion. Next.js App Router, React Query, NextAuth, Tailwind CSS.
+E-commerce frontend for NOOR-G — premium cotton & lawn fashion. Next.js App Router, React Query, NextAuth, Tailwind CSS.
 
 ## Setup
 

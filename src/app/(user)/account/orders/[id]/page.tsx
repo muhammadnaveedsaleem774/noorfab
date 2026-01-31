@@ -1,34 +1,193 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  Check,
+  Copy,
+  Download,
+  Headphones,
+  MapPin,
+  Package,
+  Truck,
+  X,
+  ExternalLink,
+} from "lucide-react";
+import { useState } from "react";
 import { MOCK_ORDERS } from "@/lib/mockOrders";
 import { MOCK_PRODUCTS } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
-import { ORDER_STATUS, ROUTES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { ROUTES, ORDER_STATUS } from "@/lib/constants";
 
 const GOLD = "#C4A747";
+const CREAM = "#F5F3EE";
+const SAGE = "#5BA383";
 
-const STEPS = [
-  { key: ORDER_STATUS.CONFIRMED, label: "Confirmed" },
-  { key: ORDER_STATUS.PROCESSING, label: "Processing" },
-  { key: ORDER_STATUS.SHIPPED, label: "Shipped" },
-  { key: ORDER_STATUS.DELIVERED, label: "Delivered" },
+const STATUS_STYLES: Record<string, string> = {
+  [ORDER_STATUS.PROCESSING]: "bg-amber-100 text-amber-700 border-amber-200",
+  [ORDER_STATUS.SHIPPED]: "bg-blue-100 text-blue-700 border-blue-200",
+  [ORDER_STATUS.DELIVERED]: "bg-green-100 text-green-700 border-green-200",
+  [ORDER_STATUS.PENDING]: "bg-gray-100 text-gray-700 border-gray-200",
+  [ORDER_STATUS.CONFIRMED]: "bg-sky-100 text-sky-700 border-sky-200",
+  [ORDER_STATUS.CANCELLED]: "bg-red-100 text-red-700 border-red-200",
+};
+
+const TIMELINE_STEPS = [
+  { key: "placed", label: "Order Placed", icon: Package },
+  { key: "processing", label: "Processing", icon: Package },
+  { key: "shipped", label: "Shipped", icon: Truck },
+  { key: "delivered", label: "Delivered", icon: Check },
 ];
 
-function formatOrderDate(iso?: string): string {
-  if (!iso) return "—";
-  try {
-    return new Date(iso).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return "—";
-  }
+function getStepStatus(orderStatus: string, stepKey: string) {
+  const statusOrder = ["placed", "processing", "shipped", "delivered"];
+  const statusMap: Record<string, string> = {
+    [ORDER_STATUS.PENDING]: "placed",
+    [ORDER_STATUS.CONFIRMED]: "placed",
+    [ORDER_STATUS.PROCESSING]: "processing",
+    [ORDER_STATUS.SHIPPED]: "shipped",
+    [ORDER_STATUS.DELIVERED]: "delivered",
+  };
+
+  const currentStep = statusMap[orderStatus] ?? "placed";
+  const currentIndex = statusOrder.indexOf(currentStep);
+  const stepIndex = statusOrder.indexOf(stepKey);
+
+  if (stepIndex < currentIndex) return "complete";
+  if (stepIndex === currentIndex) return "active";
+  return "pending";
+}
+
+function ProgressTimeline({
+  orderStatus,
+  orderDate,
+}: {
+  orderStatus: string;
+  orderDate?: string;
+}) {
+  return (
+    <div className="rounded-xl border border-[#eee] bg-white p-6">
+      <h3 className="mb-6 text-lg font-bold text-[#333333]">Order Progress</h3>
+
+      {/* Desktop: Horizontal */}
+      <div className="hidden md:block">
+        <div className="flex items-center justify-between">
+          {TIMELINE_STEPS.map((step, i) => {
+            const status = getStepStatus(orderStatus, step.key);
+            const Icon = step.icon;
+
+            return (
+              <div key={step.key} className="flex flex-1 flex-col items-center">
+                {/* Line before */}
+                {i > 0 && (
+                  <div
+                    className={cn(
+                      "absolute left-0 top-1/2 h-1 w-full -translate-y-1/2",
+                      status === "complete" || status === "active"
+                        ? "bg-[#C4A747]"
+                        : "bg-[#ddd]"
+                    )}
+                    style={{ width: "calc(100% - 48px)", left: "-50%" }}
+                  />
+                )}
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div
+                    className={cn(
+                      "flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all",
+                      status === "complete" &&
+                        "border-[#C4A747] bg-[#C4A747] text-white",
+                      status === "active" &&
+                        "border-[#C4A747] bg-white text-[#C4A747]",
+                      status === "pending" && "border-[#ddd] bg-white text-[#999]"
+                    )}
+                  >
+                    {status === "complete" ? (
+                      <Check className="h-5 w-5" />
+                    ) : (
+                      <Icon className="h-5 w-5" />
+                    )}
+                  </div>
+                  <span
+                    className={cn(
+                      "mt-3 text-sm font-medium",
+                      status === "pending" ? "text-[#999]" : "text-[#333333]"
+                    )}
+                  >
+                    {step.label}
+                  </span>
+                  {step.key === "placed" && orderDate && (
+                    <span className="mt-1 text-xs text-[#333333]/50" suppressHydrationWarning>
+                      {new Date(orderDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Mobile: Vertical */}
+      <div className="space-y-4 md:hidden">
+        {TIMELINE_STEPS.map((step, i) => {
+          const status = getStepStatus(orderStatus, step.key);
+          const Icon = step.icon;
+
+          return (
+            <div key={step.key} className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full border-2",
+                    status === "complete" &&
+                      "border-[#C4A747] bg-[#C4A747] text-white",
+                    status === "active" &&
+                      "border-[#C4A747] bg-white text-[#C4A747]",
+                    status === "pending" && "border-[#ddd] bg-white text-[#999]"
+                  )}
+                >
+                  {status === "complete" ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Icon className="h-4 w-4" />
+                  )}
+                </div>
+                {i < TIMELINE_STEPS.length - 1 && (
+                  <div
+                    className={cn(
+                      "mt-2 h-8 w-0.5",
+                      status === "complete" || status === "active"
+                        ? "bg-[#C4A747]"
+                        : "bg-[#ddd]"
+                    )}
+                  />
+                )}
+              </div>
+              <div className="pt-2">
+                <span
+                  className={cn(
+                    "text-sm font-medium",
+                    status === "pending" ? "text-[#999]" : "text-[#333333]"
+                  )}
+                >
+                  {step.label}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 export default function OrderDetailPage() {
@@ -36,156 +195,273 @@ export default function OrderDetailPage() {
   const router = useRouter();
   const id = typeof params.id === "string" ? params.id : "";
   const order = MOCK_ORDERS.find((o) => o.id === id);
+  const [copied, setCopied] = useState(false);
 
   if (!order) {
     return (
       <div className="space-y-6">
-        <p className="text-muted-foreground">Order not found.</p>
-        <Button asChild variant="outline" onClick={() => router.push("/account/orders")}>
-          <Link href="/account/orders">Back to Orders</Link>
-        </Button>
+        <Link
+          href={`${ROUTES.account}/orders`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#C4A747] hover:underline"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Orders
+        </Link>
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#ddd] bg-[#F5F3EE]/50 py-20 text-center">
+          <Package className="h-20 w-20 text-[#333333]/20" />
+          <p className="mt-4 text-lg font-medium text-[#333333]">
+            Order not found
+          </p>
+          <Button
+            asChild
+            className="mt-6"
+            style={{ backgroundColor: GOLD, color: "#333333" }}
+          >
+            <Link href={`${ROUTES.account}/orders`}>View All Orders</Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
-  const currentStepIndex = STEPS.findIndex((s) => s.key === order.orderStatus);
-  const productMap = new Map(MOCK_PRODUCTS.map((p) => [p.id, p]));
+  const handleCopyTracking = () => {
+    if (order.trackingNumber) {
+      navigator.clipboard.writeText(order.trackingNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const canCancel =
+    order.orderStatus === ORDER_STATUS.PENDING ||
+    order.orderStatus === ORDER_STATUS.PROCESSING;
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[#333333]">{order.orderNumber}</h1>
-          <p className="text-sm text-muted-foreground">{formatOrderDate(order.createdAt)}</p>
+      {/* Header */}
+      <div>
+        <Link
+          href={`${ROUTES.account}/orders`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#C4A747] transition hover:gap-3 hover:underline"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Orders
+        </Link>
+
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          <h1 className="text-2xl font-bold text-[#333333] md:text-[28px]">
+            {order.orderNumber}
+          </h1>
+          <span
+            className={cn(
+              "rounded-full border px-4 py-1.5 text-sm font-medium",
+              STATUS_STYLES[order.orderStatus] ?? "bg-gray-100"
+            )}
+          >
+            {order.orderStatus}
+          </span>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm" className="border-[#333333]/20">
-            <Link href={ROUTES.shop}>Reorder</Link>
+
+        <p className="mt-2 text-[#333333]/70" suppressHydrationWarning>
+          Placed on{" "}
+          {order.createdAt
+            ? new Date(order.createdAt).toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : "—"}
+        </p>
+      </div>
+
+      {/* Progress Timeline */}
+      {order.orderStatus !== ORDER_STATUS.CANCELLED && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <ProgressTimeline
+            orderStatus={order.orderStatus}
+            orderDate={order.createdAt}
+          />
+        </motion.div>
+      )}
+
+      {/* Main Content */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_1fr_auto] lg:gap-8">
+        {/* Shipping Address */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl border border-[#eee] bg-white p-6"
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className="flex h-10 w-10 items-center justify-center rounded-full"
+              style={{ backgroundColor: `${GOLD}20` }}
+            >
+              <MapPin className="h-5 w-5" style={{ color: GOLD }} />
+            </div>
+            <h3 className="text-lg font-bold text-[#333333]">Shipping Address</h3>
+          </div>
+          <div className="mt-4 text-[#333333]/80">
+            <p className="font-medium text-[#333333]">
+              {order.shippingAddress.fullName}
+            </p>
+            <p className="mt-1">{order.shippingAddress.street}</p>
+            <p>
+              {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+              {order.shippingAddress.postalCode}
+            </p>
+            <p>{order.shippingAddress.country}</p>
+            <p className="mt-2">{order.shippingAddress.phone}</p>
+          </div>
+        </motion.div>
+
+        {/* Order Items */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-[#eee] bg-white p-6"
+        >
+          <h3 className="text-lg font-bold text-[#333333]">
+            Order Items ({order.items.length})
+          </h3>
+          <div className="mt-4 space-y-4">
+            {order.items.map((item, i) => {
+              const product = MOCK_PRODUCTS.find((p) => p.id === item.productId);
+              const variant = product?.variants.find(
+                (v) => v.variantSKU === item.variantSKU
+              );
+
+              return (
+                <div
+                  key={i}
+                  className="flex gap-4 border-b border-[#eee] pb-4 last:border-0 last:pb-0"
+                >
+                  <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+                    <Image
+                      src={product?.images[0]?.url ?? "/placeholder.svg"}
+                      alt={product?.name ?? "Product"}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-[#333333]">
+                      {product?.name ?? "Product"}
+                    </p>
+                    <p className="text-sm text-[#333333]/60">
+                      {variant?.size} / {variant?.color} × {item.quantity}
+                    </p>
+                  </div>
+                  <p className="shrink-0 font-semibold text-[#333333]">
+                    {formatPrice(item.unitPrice * item.quantity)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Totals */}
+          <div className="mt-6 space-y-2 border-t border-[#eee] pt-4 text-sm">
+            <div className="flex justify-between">
+              <span className="text-[#333333]/70">Subtotal</span>
+              <span className="text-[#333333]">{formatPrice(order.subtotal)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#333333]/70">Shipping</span>
+              <span className="text-[#333333]">
+                {order.shippingFee === 0 ? "Free" : formatPrice(order.shippingFee)}
+              </span>
+            </div>
+            <div className="flex justify-between border-t border-[#eee] pt-2 text-base font-bold text-[#333333]">
+              <span>Total</span>
+              <span>{formatPrice(order.totalAmount)}</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Quick Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-4 lg:w-[200px]"
+        >
+          <Button
+            variant="outline"
+            className="w-full justify-start border-[#ddd]"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Download Invoice
           </Button>
-          {order.orderStatus === ORDER_STATUS.DELIVERED && (
-            <Button size="sm" style={{ backgroundColor: GOLD, color: "#333333" }}>
-              Download Invoice
+          <Button
+            variant="outline"
+            className="w-full justify-start border-[#ddd]"
+          >
+            <Headphones className="mr-2 h-4 w-4" />
+            Contact Support
+          </Button>
+          {canCancel && (
+            <Button
+              variant="outline"
+              className="w-full justify-start border-red-200 text-red-600 hover:bg-red-50"
+            >
+              <X className="mr-2 h-4 w-4" />
+              Cancel Order
             </Button>
           )}
-        </div>
+        </motion.div>
       </div>
 
-      {/* Status timeline */}
-      <div className="rounded-lg border border-[#333333]/10 bg-card p-6">
-        <h2 className="mb-4 text-lg font-semibold text-[#333333]">Order status</h2>
-        <ol className="flex flex-wrap gap-4 sm:flex-nowrap">
-          {STEPS.map((step, i) => {
-            const done = currentStepIndex >= i;
-            const current = currentStepIndex === i;
-            return (
-              <li key={step.key} className="flex flex-1 items-center gap-2">
-                <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium ${
-                    done ? "bg-[#C4A747] text-[#333333]" : "bg-[#333333]/10 text-[#333333]"
-                  } ${current ? "ring-2 ring-[#C4A747] ring-offset-2" : ""}`}
-                >
-                  {done ? "✓" : i + 1}
-                </span>
-                <span className={`text-sm ${done ? "font-medium text-[#333333]" : "text-muted-foreground"}`}>
-                  {step.label}
-                </span>
-                {i < STEPS.length - 1 && (
-                  <span className="hidden flex-1 border-t border-[#333333]/20 sm:block" aria-hidden />
-                )}
-              </li>
-            );
-          })}
-        </ol>
-        {order.trackingNumber && order.orderStatus !== ORDER_STATUS.PROCESSING && order.orderStatus !== ORDER_STATUS.CONFIRMED && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            Tracking: <strong className="text-[#333333]">{order.trackingNumber}</strong>
-          </p>
-        )}
-      </div>
-
-      {/* Shipping address */}
-      <div className="rounded-lg border border-[#333333]/10 bg-card p-6">
-        <h2 className="mb-2 text-lg font-semibold text-[#333333]">Shipping address</h2>
-        <address className="not-italic text-sm text-muted-foreground">
-          {order.shippingAddress.fullName}<br />
-          {order.shippingAddress.street}<br />
-          {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.postalCode}<br />
-          {order.shippingAddress.country}<br />
-          {order.shippingAddress.phone}
-        </address>
-      </div>
-
-      {/* Items */}
-      <div className="rounded-lg border border-[#333333]/10 bg-card overflow-hidden">
-        <h2 className="border-b border-[#333333]/10 px-6 py-4 text-lg font-semibold text-[#333333]">Items ordered</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-[#333333]/10 bg-muted/30">
-                <th className="px-6 py-3 text-left font-medium text-[#333333]">Product</th>
-                <th className="px-6 py-3 text-left font-medium text-[#333333]">Variant</th>
-                <th className="px-6 py-3 text-right font-medium text-[#333333]">Qty</th>
-                <th className="px-6 py-3 text-right font-medium text-[#333333]">Price</th>
-                <th className="px-6 py-3 text-right font-medium text-[#333333]">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.items.map((item) => {
-                const product = productMap.get(item.productId);
-                const variant = product?.variants.find((v) => v.variantSKU === item.variantSKU);
-                const subtotal = item.unitPrice * item.quantity;
-                return (
-                  <tr key={item.variantSKU} className="border-b border-[#333333]/5">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded bg-muted">
-                          <Image
-                            src={product?.images[0]?.url ?? "/placeholder.svg"}
-                            alt={product?.name ?? "Product"}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
-                          />
-                        </div>
-                        <span className="font-medium text-[#333333]">{product?.name ?? "—"}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-muted-foreground">
-                      {variant ? `${variant.size} / ${variant.color}` : "—"}
-                    </td>
-                    <td className="px-6 py-4 text-right">{item.quantity}</td>
-                    <td className="px-6 py-4 text-right">{formatPrice(item.unitPrice)}</td>
-                    <td className="px-6 py-4 text-right font-medium">{formatPrice(subtotal)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Price breakdown */}
-      <div className="rounded-lg border border-[#333333]/10 bg-card p-6">
-        <h2 className="mb-4 text-lg font-semibold text-[#333333]">Price breakdown</h2>
-        <dl className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <dt className="text-muted-foreground">Subtotal</dt>
-            <dd className="font-medium">{formatPrice(order.subtotal)}</dd>
+      {/* Tracking Info */}
+      {order.trackingNumber && order.orderStatus === ORDER_STATUS.SHIPPED && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="rounded-xl border border-blue-200 bg-blue-50 p-6"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Truck className="h-6 w-6 text-blue-600" />
+              <div>
+                <p className="font-semibold text-[#333333]">
+                  Your order is on the way!
+                </p>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="text-sm text-[#333333]/70">
+                    Tracking: {order.trackingNumber}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleCopyTracking}
+                    className="rounded p-1 text-blue-600 transition hover:bg-blue-100"
+                  >
+                    {copied ? (
+                      <Check className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <Button
+              size="sm"
+              className="bg-blue-600 text-white hover:bg-blue-700"
+            >
+              <ExternalLink className="mr-1.5 h-4 w-4" />
+              Track Shipment
+            </Button>
           </div>
-          <div className="flex justify-between">
-            <dt className="text-muted-foreground">Shipping</dt>
-            <dd className="font-medium">{formatPrice(order.shippingFee)}</dd>
-          </div>
-          <div className="flex justify-between border-t border-[#333333]/10 pt-3 text-lg font-bold text-[#333333]">
-            <dt>Total</dt>
-            <dd>{formatPrice(order.totalAmount)}</dd>
-          </div>
-        </dl>
-      </div>
-
-      <Button asChild variant="outline" className="border-[#333333]/20">
-        <Link href="/account/orders">Back to Orders</Link>
-      </Button>
+        </motion.div>
+      )}
     </div>
   );
 }

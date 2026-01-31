@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { CheckCircle, XCircle, AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -83,7 +83,12 @@ function ToastItemComponent({
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ToastItem[]>([]);
+  const [hasMounted, setHasMounted] = useState(false);
   const timeoutsRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const remove = useCallback((id: string) => {
     const t = timeoutsRef.current.get(id);
@@ -115,7 +120,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {typeof document !== "undefined" &&
+      {hasMounted &&
         createPortal(
           <div
             className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2"

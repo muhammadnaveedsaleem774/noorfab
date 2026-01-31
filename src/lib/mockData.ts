@@ -15,7 +15,8 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-CT-001",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Classic Cotton Tee", order: 0 },
+      { url: "/hero-banner.jpg", altText: "Classic Cotton Tee", order: 0 },
+     
     ],
     variants: [
       { size: "S", color: "White", stock: 10, variantSKU: "ALT-CT-001-S-W" },
@@ -23,6 +24,7 @@ export const MOCK_PRODUCTS: Product[] = [
       { size: "L", color: "Black", stock: 12, variantSKU: "ALT-CT-001-L-B" },
       { size: "M", color: "Sage", stock: 8, variantSKU: "ALT-CT-001-M-S" },
     ],
+    
   },
   {
     id: "2",
@@ -37,7 +39,7 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-SL-002",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Sage Linen Shirt", order: 0 },
+      { url: "/product-1.jpg", altText: "Sage Linen Shirt", order: 0 },
     ],
     variants: [
       { size: "S", color: "Sage", stock: 5, variantSKU: "ALT-SL-002-S-S" },
@@ -58,7 +60,7 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-LK-003",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Lawn Kurti", order: 0 },
+      { url: "/hero-banner12.jpg", altText: "Lawn Kurti", order: 0 },
     ],
     variants: [
       { size: "S", color: "Pink", stock: 6, variantSKU: "ALT-LK-003-S-P" },
@@ -79,7 +81,7 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-CP-004",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Cotton Palazzo", order: 0 },
+      { url: "/product-3.jpg", altText: "Cotton Palazzo", order: 0 },
     ],
     variants: [
       { size: "M", color: "White", stock: 11, variantSKU: "ALT-CP-004-M-W" },
@@ -99,7 +101,7 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-LBD-005",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Linen Blend Dress", order: 0 },
+      { url: "/product-4.jpg", altText: "Linen Blend Dress", order: 0 },
     ],
     variants: [
       { size: "S", color: "Cream", stock: 4, variantSKU: "ALT-LBD-005-S-C" },
@@ -120,7 +122,7 @@ export const MOCK_PRODUCTS: Product[] = [
     SKU: "ALT-FET-006",
     status: PRODUCT_STATUS.ACTIVE,
     images: [
-      { url: "/placeholder.svg", altText: "Festive Embroidered Top", order: 0 },
+      { url: "/hero-banner12.jpg", altText: "Festive Embroidered Top", order: 0 },
     ],
     variants: [
       { size: "S", color: "Burgundy", stock: 5, variantSKU: "ALT-FET-006-S-B" },
@@ -136,12 +138,14 @@ export const COLLECTION_PRODUCT_IDS: Record<string, string[]> = {
   linen: ["2", "4", "5"],
   festive: ["5", "6"],
   "ready-to-wear": ["1", "2", "3", "4", "5", "6"],
+  "new-arrivals": ["3", "5", "6"],
 };
 
 export const MOCK_COLLECTIONS = [
-  { id: "col-lawn", name: "Lawn", slug: "lawn", description: "Light, breathable lawn for summer.", image: "/placeholder.svg", displayOrder: 1 },
-  { id: "col-cotton", name: "Cotton", slug: "cotton", description: "Pure cotton essentials.", image: "/placeholder.svg", displayOrder: 2 },
-  { id: "col-linen", name: "Linen", slug: "linen", description: "Natural linen for everyday elegance.", image: "/placeholder.svg", displayOrder: 3 },
-  { id: "col-festive", name: "Festive", slug: "festive", description: "Celebration-ready silhouettes.", image: "/placeholder.svg", displayOrder: 4 },
-  { id: "col-rtw", name: "Ready-to-Wear", slug: "ready-to-wear", description: "Effortless everyday wear.", image: "/placeholder.svg", displayOrder: 5 },
+  { id: "col-lawn", name: "Lawn", slug: "lawn", description: "Light, breathable lawn for summer.", image: "/collection-cotton.jpg", displayOrder: 1 },
+  { id: "col-cotton", name: "Cotton", slug: "cotton", description: "Pure cotton essentials.", image: "/collection-festive.jpg", displayOrder: 2 },
+  { id: "col-linen", name: "Linen", slug: "linen", description: "Natural linen for everyday elegance.", image: "/collection-linen.jpg", displayOrder: 3 },
+  { id: "col-festive", name: "Festive", slug: "festive", description: "Celebration-ready silhouettes.", image: "/product-4.jpg", displayOrder: 4 },
+  { id: "col-rtw", name: "Ready-to-Wear", slug: "ready-to-wear", description: "Effortless everyday wear.", image: "/pro1.jpg", displayOrder: 5 },
+  { id: "col-new", name: "New Arrivals", slug: "new-arrivals", description: "Fresh styles for the season.", image: "/pro2.jpg", displayOrder: 6 },
 ] as const;

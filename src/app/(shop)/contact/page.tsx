@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Phone, MapPin, Clock, Facebook, Instagram, Twitter } from "lucide-react";
@@ -17,7 +16,7 @@ import { Container } from "@/components/layout/Container";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validations";
 
 const CONTACT_INFO = {
-  email: "hello@al-noor.com",
+  email: "hello@noor-g.com",
   phone: "+1 (234) 567-890",
   address: "123 Fashion Avenue, Suite 100, New York, NY 10001",
   hours: "Mon–Fri: 9:00 AM – 6:00 PM\nSat: 10:00 AM – 4:00 PM\nSun: Closed",
@@ -47,7 +46,7 @@ const FAQ_ITEMS = [
     a: "Once your order ships, you will receive an email with a tracking link. You can also view order status in your account under Orders.",
   },
   {
-    q: "How do I care for my AL-NOOR pieces?",
+    q: "How do I care for my NOOR-G pieces?",
     a: "Care instructions are on each product page and on the garment label. We recommend following them to keep your pieces in the best condition.",
   },
 ];
@@ -83,13 +82,12 @@ export default function ContactPage() {
 
   return (
     <>
-      <Breadcrumb />
       <Container className="py-8 md:py-12">
         <h1 className="text-3xl font-bold text-[#333333] md:text-4xl">
           Contact Us
         </h1>
         <p className="mt-2 text-[#333333]/80">
-          Get in touch with the AL-NOOR team. We&apos;d love to hear from you.
+          Get in touch with the NOOR-G team. We&apos;d love to hear from you.
         </p>
 
         {/* Form 60% + Info 40% */}

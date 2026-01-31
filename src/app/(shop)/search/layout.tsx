@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Search | AL-NOOR",
-  description: "Search AL-NOOR clothing and collections. Find premium cotton, linen, lawn and ready-to-wear pieces.",
+  title: "Search | NOOR-G",
+  description: "Search NOOR-G clothing and collections. Find premium cotton, linen, lawn and ready-to-wear pieces.",
   openGraph: {
-    title: "Search | AL-NOOR",
-    description: "Search AL-NOOR clothing and collections.",
+    title: "Search | NOOR-G",
+    description: "Search NOOR-G clothing and collections.",
   },
 };
 

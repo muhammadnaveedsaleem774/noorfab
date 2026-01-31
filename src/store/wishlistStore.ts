@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 
-const WISHLIST_STORAGE_KEY = "al-noor-wishlist";
+const WISHLIST_STORAGE_KEY = "noor-g-wishlist";
 
 type PersistedWishlist = { productIds: string[] };
 

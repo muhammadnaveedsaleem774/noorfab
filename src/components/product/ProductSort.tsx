@@ -16,7 +16,7 @@ export const SORT_OPTIONS = [
   { value: "bestselling", label: "Best Selling" },
 ] as const;
 
-export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+export type SortValue = (typeof SORT_OPTIONS)[number]["value"] | "relevance";
 
 interface ProductSortProps {
   value: SortValue;

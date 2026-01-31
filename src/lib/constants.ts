@@ -2,8 +2,8 @@
 // Site
 // ---------------------------------------------------------------------------
 
-export const SITE_NAME = "AL-NOOR";
-export const SITE_DESCRIPTION = "Premium clothing brand - AL-NOOR";
+export const SITE_NAME = "NOOR-G";
+export const SITE_DESCRIPTION = "Premium clothing brand - NOOR-G";
 
 export const ROUTES = {
   home: "/",

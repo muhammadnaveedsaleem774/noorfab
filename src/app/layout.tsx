@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { Providers } from "@/components/shared/Providers";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { siteMetadata } from "@/lib/metadata";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,10 +25,15 @@ export default function RootLayout({
           </a>
           <div className="flex min-h-screen flex-col bg-cream">
             <Header />
-            <main id="main-content" className="flex-1" role="main">
+            <main
+              id="main-content"
+              className="flex-1 pb-20 md:pb-0"
+              role="main"
+            >
               {children}
             </main>
             <Footer />
+            <BottomNav />
           </div>
         </Providers>
       </body>

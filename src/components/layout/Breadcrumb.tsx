@@ -10,14 +10,19 @@ const LABELS: Record<string, string> = {
   [ROUTES.home]: "Home",
   [ROUTES.shop]: "Shop",
   [ROUTES.collections]: "Collections",
-  "/products": "Products",
-  [ROUTES.about]: "About",
+  "/products": "Shop", // Products route doesn't exist, redirect to Shop
+  [ROUTES.about]: "Who We Are",
   [ROUTES.contact]: "Contact",
   [ROUTES.cart]: "Cart",
   [ROUTES.wishlist]: "Wishlist",
   [ROUTES.account]: "Account",
   [ROUTES.login]: "Sign In",
   [ROUTES.checkout]: "Checkout",
+};
+
+// Paths that should redirect to different routes
+const PATH_REDIRECTS: Record<string, string> = {
+  "/products": ROUTES.shop, // /products doesn't exist, link to /shop
 };
 
 function getBreadcrumbSegments(pathname: string): { path: string; label: string }[] {
@@ -61,7 +66,7 @@ export function Breadcrumb() {
                 </span>
               ) : (
                 <Link
-                  href={path}
+                  href={PATH_REDIRECTS[path] ?? path}
                   className="text-[#333333] transition-colors hover:text-[#C4A747]"
                 >
                   {label}

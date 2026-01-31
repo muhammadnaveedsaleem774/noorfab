@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Us | AL-NOOR",
+  title: "Contact Us | NOOR-G",
   description:
-    "Get in touch with AL-NOOR. Send us a message, find our address, working hours, and social links.",
+    "Get in touch with NOOR-G. Send us a message, find our address, working hours, and social links.",
   openGraph: {
-    title: "Contact Us | AL-NOOR",
-    description: "Contact AL-NOOR for enquiries, support, and feedback.",
+    title: "Contact Us | NOOR-G",
+    description: "Contact NOOR-G for enquiries, support, and feedback.",
   },
 };
 

@@ -3,22 +3,34 @@
 @tailwind utilities;
 
 @layer base {
+  /* Responsive base font size */
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    font-size: 16px;
+  }
+  @media (max-width: 1024px) {
+    html {
+      font-size: 15px;
+    }
+  }
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
   }
   body {
     margin: 0;
     padding: 0;
   }
   :root {
-    /* AL-NOOR: Primary Dark #333333 */
+    /* NOOR-G: Primary Dark #333333 */
     --primary-dark: 0 0% 20%;
-    /* AL-NOOR: Gold Accent #C4A747 */
+    /* NOOR-G: Gold Accent #C4A747 */
     --gold-accent: 43 42% 52%;
-    /* AL-NOOR: Cream #F5F3EE */
+    /* NOOR-G: Cream #F5F3EE */
     --cream: 40 25% 96%;
-    /* AL-NOOR: Sage Green #5BA383 */
+    /* NOOR-G: Sage Green #5BA383 */
     --sage: 155 27% 47%;
 
     --background: 40 25% 96%;
@@ -170,5 +182,38 @@
   }
   .touch-target-x {
     min-width: 44px;
+  }
+  /* Responsive heading scales */
+  .heading-xl {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .heading-lg {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  .heading-md {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+  /* Ripple effect for touch */
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple-effect::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(196, 167, 71, 0.2) 0%, transparent 70%);
+    transform: scale(0);
+    opacity: 1;
+    pointer-events: none;
+  }
+  .ripple-effect:active::after {
+    animation: ripple 0.4s ease-out;
   }
 }

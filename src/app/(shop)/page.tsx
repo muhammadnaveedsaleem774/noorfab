@@ -20,15 +20,15 @@ const DARK = "#333333";
 
 const FEATURED_COLLECTIONS = [
   { slug: "lawn", name: "Lawn", description: "Light, breathable lawn for summer.", image: "/product-1.jpg" },
-  { slug: "cotton", name: "Cotton", description: "Pure cotton essentials.", image: "/placeholder.svg" },
-  { slug: "linen", name: "Linen", description: "Natural linen for everyday elegance.", image: "/placeholder.svg" },
-  { slug: "festive", name: "Festive", description: "Celebration-ready silhouettes.", image: "/placeholder.svg" },
-  { slug: "ready-to-wear", name: "Ready-to-Wear", description: "Effortless everyday wear.", image: "/placeholder.svg" },
+  { slug: "cotton", name: "Cotton", description: "Pure cotton essentials.", image: "/product-3.jpg" },
+  { slug: "linen", name: "Linen", description: "Natural linen for everyday elegance.", image: "/hero-banner12.jpg" },
+  { slug: "festive", name: "Festive", description: "Celebration-ready silhouettes.", image: "/pro2.jpg" },
+  { slug: "ready-to-wear", name: "Ready-to-Wear", description: "Effortless everyday wear.", image: "/pro1.jpg" },
 ];
 
 const TESTIMONIALS = [
   { id: 1, name: "Sarah K.", city: "Lahore", rating: 5, text: "The quality is exceptional. I ordered the lawn collection and the fabric is so soft. Will definitely order again." },
-  { id: 2, name: "Ayesha M.", city: "Karachi", rating: 5, text: "Beautiful designs and fast delivery. AL-NOOR has become my go-to for traditional and modern wear." },
+  { id: 2, name: "Ayesha M.", city: "Karachi", rating: 5, text: "Beautiful designs and fast delivery. NOOR-G has become my go-to for traditional and modern wear." },
   { id: 3, name: "Fatima R.", city: "Islamabad", rating: 5, text: "Love the cotton range—perfect for our climate. The fit is true to size and the stitching is neat." },
 ];
 
@@ -87,7 +87,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <Image
             src={HERO_IMAGE}
-            alt="AL-NOOR premium clothing in an elegant setting"
+            alt="NOOR-G premium clothing in an elegant setting"
             fill
             className="object-cover object-center"
             priority

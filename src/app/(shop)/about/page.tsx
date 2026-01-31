@@ -1,4 +1,3 @@
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import Image from "next/image";
 import {
   Award,
@@ -13,12 +12,11 @@ const CREAM = "#F5F3EE";
 export default function AboutPage() {
   return (
     <>
-      <Breadcrumb />
       {/* Hero */}
       <section className="relative h-[50vh] min-h-[320px] w-full overflow-hidden bg-[#333333]">
         <Image
-          src="/placeholder.svg"
-          alt="AL-NOOR brand"
+          src="/noor-logo.jpeg"
+          alt="NOOR-G brand"
           fill
           className="object-cover opacity-80"
           priority
@@ -26,7 +24,7 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#333333]/50 px-4 text-center text-white">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            AL-NOOR
+            NOOR-G
           </h1>
           <p className="mt-2 text-lg text-white/90 sm:text-xl">
             Premium clothing for the modern wardrobe
@@ -42,7 +40,7 @@ export default function AboutPage() {
           </h2>
           <div className="mt-8 space-y-6 text-left text-[#333333]/90">
             <p className="leading-relaxed">
-              AL-NOOR was born from a simple belief: that everyday clothing should feel
+              NOOR-G was born from a simple belief: that everyday clothing should feel
               as special as the moments you wear it for. We started with a small
               collection of cotton and linen pieces, designed to be comfortable,
               durable, and timeless—never trend-driven, always true to our vision.
@@ -86,7 +84,7 @@ export default function AboutPage() {
               {
                 icon: Heart,
                 title: "Customer Care",
-                text: "From fit to aftercare, we are here to help you get the most from your AL-NOOR pieces.",
+                text: "From fit to aftercare, we are here to help you get the most from your NOOR-G pieces.",
               },
               {
                 icon: Sparkles,
@@ -117,7 +115,7 @@ export default function AboutPage() {
           <div className="grid gap-12 md:grid-cols-2 md:items-center">
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
               <Image
-                src="/placeholder.svg"
+                src="/hero-banner.jpg"
                 alt="Fabric close-up"
                 fill
                 className="object-cover"
@@ -137,7 +135,7 @@ export default function AboutPage() {
               </p>
               <p className="mt-4 leading-relaxed text-[#333333]/90">
                 Every piece comes with care instructions so you can keep your
-                AL-NOOR wardrobe looking and feeling its best for years to come.
+                NOOR-G wardrobe looking and feeling its best for years to come.
               </p>
             </div>
           </div>
@@ -155,19 +153,19 @@ export default function AboutPage() {
           </h2>
           <div className="relative mx-auto mt-10 max-w-2xl">
             <blockquote className="text-lg italic leading-relaxed text-[#333333]/90">
-              &ldquo;We built AL-NOOR for people who want fewer, better things.
+              &ldquo;We built NOOR-G for people who want fewer, better things.
               Our goal is to offer clothing you reach for again and again—pieces
               that become part of your story. Thank you for trusting us with
               your wardrobe.&rdquo;
             </blockquote>
             <p className="mt-6 font-medium text-[#333333]">
-              — The AL-NOOR Team
+              — The NOOR-G Team
             </p>
           </div>
           <div className="relative mx-auto mt-10 h-48 w-48 overflow-hidden rounded-full bg-[#333333]/10">
             <Image
-              src="/placeholder.svg"
-              alt="AL-NOOR team"
+              src="/collection-cotton.jpg"
+              alt="NOOR-G team"
               fill
               className="object-cover"
               sizes="192px"

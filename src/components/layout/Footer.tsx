@@ -27,7 +27,7 @@ const FOOTER_LINKS = {
     { label: "FAQs", href: "/faq" },
   ],
   contact: [
-    { label: "Email", href: "mailto:hello@al-noor.com", value: "hello@al-noor.com" },
+    { label: "Email", href: "mailto:hello@noor-g.com", value: "hello@noor-g.com" },
     { label: "Phone", href: "tel:+1234567890", value: "+1 (234) 567-890" },
   ],
 };
@@ -173,7 +173,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-white/20 pt-6 text-center text-sm text-white/60">
-          <span suppressHydrationWarning>© {new Date().getFullYear()} AL-NOOR. All rights reserved.</span>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} NOOR-G. All rights reserved.</span>
         </div>
       </Container>
     </footer>

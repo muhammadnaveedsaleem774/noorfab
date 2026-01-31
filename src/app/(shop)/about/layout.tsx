@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | AL-NOOR",
+  title: "About Us | NOOR-G",
   description:
-    "Discover AL-NOOR's story, mission, and fabric philosophy. Premium clothing crafted with care for the modern wardrobe.",
+    "Discover NOOR-G's story, mission, and fabric philosophy. Premium clothing crafted with care for the modern wardrobe.",
   openGraph: {
-    title: "About Us | AL-NOOR",
+    title: "About Us | NOOR-G",
     description: "Our story, mission, and commitment to quality fabrics.",
   },
 };
